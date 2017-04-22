@@ -45,7 +45,7 @@ class webserverHandler(BaseHTTPRequestHandler):
 				self.end_headers()
 
 				items = session.query(Restaurant).all()
-				self.renderPage("restaurants.html", items=items)
+				self.renderPage("restaurants.html", items=items, message=None)
 
 				print items
 				return
@@ -98,20 +98,34 @@ class webserverHandler(BaseHTTPRequestHandler):
 			self.end_headers()
 
 			ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
+
 			if ctype == 'multipart/form-data':
 				fields = cgi.parse_multipart(self.rfile, pdict)
-				messagecontent = fields.get('message')
 
-			# Now that we have the resquest, this is what we'll tell the client:
-			output = ""
-			output += "<html><body>"
-			output += "<h2> Okay, how about this: </h2>"
-			output += "<h1> %s </h1>" % messagecontent[0]
+				if self.path.endswith("/new"):
+					name = fields.get('name')
+					print "restuarant name:", name
+					print "not a list?:", name[0]
+					newRestaurant = Restaurant(name=name[0])
+					session.add(newRestaurant)
+					session.commit()
 
-			output += "<form method = 'POST' enctype = 'multipart/form-data' action = 'hello'><h2>What would you like me to say?</h2><input name = 'message' type = 'text'> <input type = 'submit' value = 'Submit'></form>"
-			output += "</body></html>"
-			self.wfile.write(output)
-			print output
+					items = session.query(Restaurant).all()
+					message = "Your restaurant has been added :D"
+					self.renderPage("restaurants.html", items=items, message=message)
+					return
+
+
+			# # Now that we have the resquest, this is what we'll tell the client:
+			# output = ""
+			# output += "<html><body>"
+			# output += "<h2> Okay, how about this: </h2>"
+			# output += "<h1> %s </h1>" % messagecontent[0]
+
+			# output += "<form method = 'POST' enctype = 'multipart/form-data' action = 'hello'><h2>What would you like me to say?</h2><input name = 'message' type = 'text'> <input type = 'submit' value = 'Submit'></form>"
+			# output += "</body></html>"
+			# self.wfile.write(output)
+			# print output
 
 		except:
 			pass
