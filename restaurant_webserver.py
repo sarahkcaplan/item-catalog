@@ -124,6 +124,24 @@ class webserverHandler(BaseHTTPRequestHandler):
 					updateRestaurant.name = name[0]
 					session.add(updateRestaurant)
 					session.commit()
+
+					items = session.query(Restaurant).all()
+					message = "Your restaurant has been edited :D"
+					self.renderPage("restaurants.html", items=items, message=message)
+					return
+
+				if self.path.endswith("/delete"):
+					path = self.path
+					restaurant_id = path.split('/')[2]
+
+					deleteRestaurant = session.query(Restaurant).filter(Restaurant.id == restaurant_id).one()
+					session.delete(deleteRestaurant)
+					session.commit()
+
+					items = session.query(Restaurant).all()
+					message = "Your restaurant has been deleted :D"
+					self.renderPage("restaurants.html", items=items, message=message)
+
 					return
 
 
