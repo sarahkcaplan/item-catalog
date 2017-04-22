@@ -103,11 +103,11 @@ class webserverHandler(BaseHTTPRequestHandler):
 				fields = cgi.parse_multipart(self.rfile, pdict)
 
 				if self.path.endswith("/new"):
-					name = fields.get('name')
+					name = fields.get("name")
 					print "restuarant name:", name
 					print "not a list?:", name[0]
-					newRestaurant = Restaurant(name=name[0])
-					session.add(newRestaurant)
+					createRestaurant = Restaurant(name=name[0])
+					session.add(createRestaurant)
 					session.commit()
 
 					items = session.query(Restaurant).all()
@@ -115,17 +115,18 @@ class webserverHandler(BaseHTTPRequestHandler):
 					self.renderPage("restaurants.html", items=items, message=message)
 					return
 
+				if self.path.endswith("/edit"):
+					path = self.path
+					restaurant_id = path.split('/')[2]
+					name = fields.get("name")
 
-			# # Now that we have the resquest, this is what we'll tell the client:
-			# output = ""
-			# output += "<html><body>"
-			# output += "<h2> Okay, how about this: </h2>"
-			# output += "<h1> %s </h1>" % messagecontent[0]
+					updateRestaurant = session.query(Restaurant).filter(Restaurant.id == restaurant_id).one()
+					updateRestaurant.name = name[0]
+					session.add(updateRestaurant)
+					session.commit()
+					return
 
-			# output += "<form method = 'POST' enctype = 'multipart/form-data' action = 'hello'><h2>What would you like me to say?</h2><input name = 'message' type = 'text'> <input type = 'submit' value = 'Submit'></form>"
-			# output += "</body></html>"
-			# self.wfile.write(output)
-			# print output
+
 
 		except:
 			pass
