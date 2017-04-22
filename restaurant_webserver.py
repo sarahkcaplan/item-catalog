@@ -79,7 +79,14 @@ class webserverHandler(BaseHTTPRequestHandler):
 				self.send_header('Content-type', 'text/html')
 				self.end_headers()
 
-				self.renderPage("delete.html")
+				path = self.path
+				print "path:",path
+				restaurant_id = path.split('/')[2]
+				print "restaurant_id:",restaurant_id
+
+				item = session.query(Restaurant).filter(Restaurant.id == restaurant_id).one()
+				print "item:",item
+				self.renderPage("delete.html", item=item)
 				return
 
 		except IOError:
