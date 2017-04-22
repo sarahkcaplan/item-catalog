@@ -49,15 +49,38 @@ class webserverHandler(BaseHTTPRequestHandler):
 
 				print items
 				return
-				## A working version without Jinja
-				# outputs = session.query(Restaurant).all()
-				# # Sends message back to client
-				# for output in outputs:
-				# 	print "\n"
-				# 	self.wfile.write(output.name)
 
-				# print outputs
-				# return
+			if self.path.endswith("/new"):
+				self.send_response(200)
+				self.send_header('Content-type', 'text/html')
+				self.end_headers()
+
+				self.renderPage("newrestaurant.html")
+				return
+
+			if self.path.endswith("/edit"):
+				self.send_response(200)
+				self.send_header('Content-type', 'text/html')
+				self.end_headers()
+
+				path = self.path
+				print "path:",path
+				restaurant_id = path.split('/')[2]
+				print "restaurant_id:",restaurant_id
+
+				item = session.query(Restaurant).filter(Restaurant.id == restaurant_id).one()
+				print "item:",item
+
+				self.renderPage("edit.html", item=item)
+				return
+
+			if self.path.endswith("/delete"):
+				self.send_response(200)
+				self.send_header('Content-type', 'text/html')
+				self.end_headers()
+
+				self.renderPage("delete.html")
+				return
 
 		except IOError:
 			self.send_error(404, "File Not Found %s" % self.path)
