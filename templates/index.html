@@ -1,0 +1,23 @@
+{% block section %}
+	<h1>List of Restaurants</h1>
+	<br>
+	{% with messages = get_flashed_messages() %}
+	{% if messages %}
+
+		<ul>
+		{% for message in messages %}
+			<li><strong> {{message}} </strong></li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+	{% endwith %}
+	<br>
+	Create a new restaurant <a href="/restaurants/new">here</a>
+	<br>
+	{% for restaurant in restaurants %}
+		<div class="item">{{restaurant.name}}</div>
+		<a href="/restaurant/{{restaurant.id}}/edit">Edit </a> <a href="/restaurant/{{restuarant.id}}/delete">Delete</a>
+	<hr>
+	<br>
+	{% endfor %}
+{% endblock section %}
