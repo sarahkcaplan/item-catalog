@@ -60,7 +60,8 @@ def restaurantNew():
 		return render_template('restaurant_new.html')
 
 @app.route('/restaurant/<int:restaurant_id>/new/', methods=['GET', 'POST'])
-def newMenuItem(restaurant_id):
+def itemNew(restaurant_id):
+	restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
 	if request.method == "POST":
 		newItem = MenuItem(name = request.form["name"],
 						   restaurant_id = restaurant_id)
@@ -69,7 +70,7 @@ def newMenuItem(restaurant_id):
 		flash("New menu item created!")
 		return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id))
 	else:
-		return render_template('newmenuitem.html', restaurant_id = restaurant_id)
+		return render_template('item_new.html', restaurant_id = restaurant_id, restaurant = restaurant)
 
 
 @app.route('/restaurant/<int:restaurant_id>/<int:menu_id>/edit/', methods=['GET', 'POST'])

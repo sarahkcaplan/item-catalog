@@ -1,6 +1,10 @@
 {% block section %}
 
-{{restaurant.name}} All Menu Items
+<strong>{{restaurant.name}} All Menu Items</strong>
+<a href="{{ url_for('restaurantEdit', restaurant_id = restaurant.id) }}">Edit Restaurant</a>
+<a href="{{ url_for('restaurantDelete', restaurant_id = restaurant.id) }}">Delete Restaurant</a>
+<br>
+<a href="{{ url_for('itemNew', restaurant_id = restaurant.id)}}">New Menu Item</a>
 <br>
 {% with messages = get_flashed_messages() %}
 
