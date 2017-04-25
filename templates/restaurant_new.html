@@ -1,0 +1,8 @@
+{% block section %}
+New restaurant
+<form method="POST" enctype ="multipart/form-data">
+	<input type="text" name="name">
+	<input type="submit" name="Submit">
+	<a href="{{ url_for('allRestaurants', restaurants = restaurants) }}">Cancel</a>
+</form>
+{% endblock section %}
