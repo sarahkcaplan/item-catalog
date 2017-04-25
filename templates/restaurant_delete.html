@@ -1,0 +1,8 @@
+{% block section %}
+Delete restaurant
+<form method="POST" enctype ="multipart/form-data">
+<p>Are you sure you want to delete {{restaurant.name}} from the database?</p>
+<input type="submit" name="Delete">
+<a href="{{ url_for('restaurantAllMenuItems', restaurant_id = restaurant.id)}}">Cancel</a>
+</form>
+{% endblock section %}
