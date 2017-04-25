@@ -1,0 +1,11 @@
+{% block section %}
+Edit Menu Item
+
+<form action="{{ url_for('itemEdit', restaurant_id = restaurant_id, menu_id = i.id) }}" method="POST">
+
+	<input type="text" placeholder="{{i.name}}" name="name">
+	<input type="submit" value="Edit">
+	<a href="{{ url_for('restaurantAllMenuItems', restaurant_id = i.restaurant_id) }}">Cancel</a>
+
+</form>
+{% endblock section %}

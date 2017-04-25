@@ -74,7 +74,7 @@ def itemNew(restaurant_id):
 
 
 @app.route('/restaurant/<int:restaurant_id>/<int:menu_id>/edit/', methods=['GET', 'POST'])
-def editMenuItem(restaurant_id, menu_id):
+def itemEdit(restaurant_id, menu_id):
 	editedItem = session.query(MenuItem).filter_by(restaurant_id = restaurant_id, id = menu_id).one()
 	if request.method == "POST":
 		if request.form["name"]:
@@ -84,11 +84,11 @@ def editMenuItem(restaurant_id, menu_id):
 			flash("Menu item edited.")
 			return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id))
 	else:
-		return render_template('editmenuitem.html', restaurant_id = restaurant_id, menu_id = menu_id, i = editedItem)
+		return render_template('item_edit.html', restaurant_id = restaurant_id, menu_id = menu_id, i = editedItem)
 
 
 @app.route('/restaurant/<int:restaurant_id>/<int:menu_id>/delete/', methods=['GET', 'POST'])
-def deleteMenuItem(restaurant_id, menu_id):
+def itemDelete(restaurant_id, menu_id):
 	deletedItem = session.query(MenuItem).filter_by(restaurant_id = restaurant_id, id = menu_id).one()
 	if request.method == "POST":
 		session.delete(deletedItem)
@@ -96,7 +96,7 @@ def deleteMenuItem(restaurant_id, menu_id):
 		flash("Menu item deleted.")
 		return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id))
 	else:
-		return render_template('deletemenuitem.html', restaurant_id = restaurant_id, menu_id = menu_id, i = editedItem)
+		return render_template('item_delete.html', restaurant_id = restaurant_id, menu_id = menu_id, i = editedItem)
 
 if __name__ == '__main__':
 	app.secret_key = "super_key"
