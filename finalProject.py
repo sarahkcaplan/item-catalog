@@ -96,7 +96,7 @@ def itemDelete(restaurant_id, menu_id):
 		flash("Menu item deleted.")
 		return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id))
 	else:
-		return render_template('item_delete.html', restaurant_id = restaurant_id, menu_id = menu_id, i = editedItem)
+		return render_template('item_delete.html', restaurant_id = restaurant_id, menu_id = menu_id, item = deletedItem)
 
 if __name__ == '__main__':
 	app.secret_key = "super_key"
