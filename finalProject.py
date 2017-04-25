@@ -39,7 +39,8 @@ def restaurantAllMenuItems(restaurant_id):
 
 @app.route('/restaurant/<int:restaurant_id>/edit/')
 def restaurantEdit(restaurant_id):
-	return
+	restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+	return render_template('restaurant_edit.html', restaurant = restaurant)
 
 @app.route('/restaurant/<int:restaurant_id>/delete/')
 def restaurantDelete(restaurant_id):

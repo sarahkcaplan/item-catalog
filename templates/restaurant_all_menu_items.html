@@ -1,0 +1,35 @@
+{% block section %}
+
+{{restaurant.name}} All Menu Items
+<br>
+{% with messages = get_flashed_messages() %}
+
+	{% if messages %}
+
+	{% for message in messages %}
+	<strong> {{message}} </strong>
+	{% endfor %}
+
+	{% endif %}
+
+{% endwith %}
+<br>
+{% for i in items %}
+
+	{{i.name}}
+
+	{{i.description}}
+
+	{{i.price}}
+
+	<a href="{{ url_for('editMenuItem', restaurant_id = restaurant.id, menu_id = i.id) }}">Edit</a>
+	<br>
+	<a href="{{ url_for('deleteMenuItem', restaurant_id = restaurant.id, menu_id = i.id) }}">Delete</a>
+
+	<hr>
+
+{% endfor %}
+<br>
+
+
+{% endblock section %}
