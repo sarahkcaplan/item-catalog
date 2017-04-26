@@ -5,6 +5,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm	import sessionmaker
 from database_setup import Base, Restaurant, MenuItem
 
+from flask import session as login_session
+import random, string
+
 engine = create_engine('sqlite:///restaurantmenu.db')
 Base.metadata.bind = engine
 
@@ -12,6 +15,11 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 # JSON endpoints
+@app.route('/restaurants/JSON')
+def allRestaurantsJSON():
+	restaurants = session.query(Restaurant).all()
+	return jsonify(Restaurant=[restaurant.serialize for restaurant in restaurants])
+
 
 @app.route('/restaurant/<int:restaurant_id>/menu/JSON')
 def restaurantMenuJSON(restaurant_id):
@@ -25,6 +33,14 @@ def MenuItemJSON(restaurant_id, menu_id):
 	return jsonify(MenuItems=item.serialize)
 
 # Routing for app pages
+
+@app.route('/login')
+def showLogin():
+	state = ''.join(random.choice(string.ascii_upercase + string.digits)
+					for x in xrange(32))
+	login_session['state'] = state
+	return "The current session state is %s" %login_session['state']
+
 @app.route('/')
 @app.route('/restaurants/')
 def allRestaurants():
