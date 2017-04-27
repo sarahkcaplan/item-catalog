@@ -1,0 +1,8 @@
+{% block section %}
+Edit restaurant
+<form method="POST" enctype ="multipart/form-data">
+	<input type="text" name="name" placeholder="{{restaurant.name}}">
+	<input type="submit" name="Submit">
+</form>
+	<a href="{{ url_for('restaurantAllMenuItems', restaurant_id = restaurant.id) }}">Cancel</a>
+{% endblock section %}
