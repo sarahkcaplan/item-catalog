@@ -55,7 +55,7 @@ def showLogin():
 		login_session['state'] = state
 		return render_template('login.html', STATE=state)
 
-@app.route('/gconnect', methods=["POST"])
+@app.route('/gconnect/', methods=["POST"])
 def gconnect():
 	if request.args.get('state') != login_session['state']:
 		response = make_response(json.dumps('Invalid state parameter'), 401)
